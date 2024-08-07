@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="universityModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'university.dbo.Relation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Relation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MasterID" Type="int" />
+          <Property Name="LessonID" Type="int" />
+        </EntityType>
+        <EntityType Name="tblLesson">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Field" Type="nvarchar" MaxLength="50" />
+          <Property Name="UnitNum" Type="int" />
+          <Property Name="InsertDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FatherName" Type="nvarchar" MaxLength="50" />
+          <Property Name="BirthDay" Type="char" MaxLength="8" />
+        </EntityType>
+        <Association Name="FK_tblMaster_tblLesson">
+          <End Role="tblLesson" Type="Self.tblLesson" Multiplicity="1" />
+          <End Role="tblMaster" Type="Self.tblMaster" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tblLesson">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblMaster">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="universityModelStoreContainer">
+          <EntitySet Name="tblLesson" EntityType="Self.tblLesson" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMaster" EntityType="Self.tblMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Relation" EntityType="Self.Relation" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Relation].[ID] AS [ID], 
+    [Relation].[MasterID] AS [MasterID], 
+    [Relation].[LessonID] AS [LessonID]
+    FROM [dbo].[Relation] AS [Relation]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_tblMaster_tblLesson" Association="Self.FK_tblMaster_tblLesson">
+            <End Role="tblLesson" EntitySet="tblLesson" />
+            <End Role="tblMaster" EntitySet="tblMaster" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="universityModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblLesson">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Field" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UnitNum" Type="Int32" />
+          <Property Name="InsertDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblMaster" Relationship="Self.FK_tblMaster_tblLesson" FromRole="tblLesson" ToRole="tblMaster" />
+        </EntityType>
+        <EntityType Name="tblMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FatherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDay" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="tblLesson" Relationship="Self.FK_tblMaster_tblLesson" FromRole="tblMaster" ToRole="tblLesson" />
+        </EntityType>
+        <EntityType Name="Relation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MasterID" Type="Int32" />
+          <Property Name="LessonID" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_tblMaster_tblLesson">
+          <End Role="tblLesson" Type="Self.tblLesson" Multiplicity="1" />
+          <End Role="tblMaster" Type="Self.tblMaster" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tblLesson">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblMaster">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="universityEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblLessons" EntityType="Self.tblLesson" />
+          <EntitySet Name="tblMasters" EntityType="Self.tblMaster" />
+          <EntitySet Name="Relations" EntityType="Self.Relation" />
+          <AssociationSet Name="FK_tblMaster_tblLesson" Association="Self.FK_tblMaster_tblLesson">
+            <End Role="tblLesson" EntitySet="tblLessons" />
+            <End Role="tblMaster" EntitySet="tblMasters" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="universityModelStoreContainer" CdmEntityContainer="universityEntities">
+          <EntitySetMapping Name="tblLessons">
+            <EntityTypeMapping TypeName="universityModel.tblLesson">
+              <MappingFragment StoreEntitySet="tblLesson">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Field" ColumnName="Field" />
+                <ScalarProperty Name="UnitNum" ColumnName="UnitNum" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMasters">
+            <EntityTypeMapping TypeName="universityModel.tblMaster">
+              <MappingFragment StoreEntitySet="tblMaster">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Relations">
+            <EntityTypeMapping TypeName="universityModel.Relation">
+              <MappingFragment StoreEntitySet="Relation">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
